@@ -8,21 +8,44 @@ class Game
   end 
 
   def start
-    @question.ask_question(@player1, 1, 2)
+    num1 = rng
+    num2 = rng
+
+    @question.ask_question(@player1, num1, num2)
+
+    print "> "
+    answer = $stdin.gets.chomp
+
+    if answer == (num1 + num2).to_s
+      puts "Yes! You are correct"
+      display_score
+    else
+      puts "Seriously? No!" 
+      @player2.lives-= 1
+      display_score
+    end
+
+    if (@player1.lives > 0 && @player2.lives > 0)
+      puts "----- NEW TURN -----"
+      start
+    elsif (@player1.lives == 0)
+      puts "Player 2 wins with a score of #{@player2.lives}/3"
+      puts "----- GAME OVER -----"
+      puts "Good bye!"
+    elsif (@player2.lives == 0)
+      puts "Player 1 wins with a score of #{@player1.lives}/3"
+      puts "----- GAME OVER -----"
+      puts "Good bye!"
+    end
+
   end
 
-  def lives
-    @player1.lives-= 1 # can i just call this instead when i need to
-    puts @player1.lives
-  end 
+  def rng 
+    rand(1...20)
+  end
 
-  def
-
-
-  def rng_two_numbers
-     num1 = rand(1...20)
-     num2 = rand(1...20)
-     return num1, num2
+  def display_score
+    puts "P1: #{@player1.lives}/3 vs P2: #{@player2.lives}/3"
   end
 
 
